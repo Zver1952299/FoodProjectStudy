@@ -276,7 +276,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(res => console.log(res));
+    // Slider ==========================================
+
+    const slides = document.querySelectorAll('.offer__slide'),
+          next = document.querySelector('.offer__slider-next'),
+          prev = document.querySelector('.offer__slider-prev'),
+          current = document.querySelector('#current'),
+          total = document.querySelector('#total');
+    let sledesIndex = 1;
+
+    showSlides(sledesIndex);
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        total.textContent = slides.length;
+    }
+
+    function showSlides(n) {
+        if (n > slides.length) {
+            sledesIndex = 1;
+        }
+
+        if (n < 1) {
+            sledesIndex = slides.length;
+        }
+
+        slides.forEach(item => item.style.display = 'none');
+
+        slides[sledesIndex - 1].style.display = 'block';
+
+        if (slides.length < 10) {
+            current.textContent = `0${sledesIndex}`;
+        } else {
+            current.textContent = sledesIndex;
+        }
+    }
+
+    function plusSlides(n) {
+        showSlides(sledesIndex += n);
+    }
+
+    prev.addEventListener('click', () => {
+        plusSlides(-1);
+    });
+
+    next.addEventListener('click', () => {
+        plusSlides(1);
+    });
 });
